@@ -1,0 +1,2 @@
+# Only the allocation runner requires OCI CLI. The dashboard uses the standard library.
+oci-cli>=3.96,<4

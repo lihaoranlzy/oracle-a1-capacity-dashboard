@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light"><title>A1 容量追踪 · Oracle Cloud</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner">
+    <a class="brand" href="/" aria-label="A1 容量追踪首页"><span class="brand-icon">A1<span></span></span><span>容量追踪<small>ORACLE CLOUD</small></span></a>
+    <div class="top-actions"><span class="private-label"><span class="lock-icon">⌑</span> 私人状态页</span><span class="separator"></span><span class="sync-state" id="sync-state"><i></i>正在同步</span><button class="button refresh" id="refresh" aria-label="立即刷新"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 7A7 7 0 0 1 18 5.9L20 9M4 15l2 3.1A7 7 0 0 0 17.9 17"/></svg><span>刷新</span></button></div>
+  </div></header>
+  <main>
+    <div id="connection-warning" class="connection-warning" hidden role="status"></div>
+    <section class="page-heading"><div><div class="eyebrow" id="region-caption"><span class="region-dot"></span> ORACLE CLOUD · AMPERE A1</div><h1>等一台 A1。</h1><p>申请在云端持续进行，每一步都有记录。</p></div><div class="target-chips"><span>Ampere ARM</span><span>1 OCPU · 6 GB</span><span>50 GB 启动盘</span></div></section>
+
+    <section class="hero panel" id="hero" aria-labelledby="status-title">
+      <div class="hero-main"><div class="status-pill" id="status-pill"><i></i><span>正在读取任务</span></div><h2 id="status-title">正在同步申请状态…</h2><p class="hero-description" id="status-description">读取虚机上的真实任务记录。</p><div class="hero-meta"><span><span class="meta-label">最近申请</span><strong id="last-attempt-time">—</strong></span><span><span class="meta-label">开始时间</span><strong id="started-at">—</strong></span></div></div>
+      <div class="countdown-block"><div class="countdown-ring" id="countdown-ring"><div><small id="countdown-label">下次尝试</small><strong id="countdown">--:--</strong><span id="countdown-sub">等待任务数据</span></div></div></div>
+      <div class="process-track" aria-label="申请流程"><div class="track-step complete"><span>1</span><div><strong>配置就绪</strong><small>规格与区域已确认</small></div></div><i></i><div class="track-step complete"><span>2</span><div><strong>检查额度</strong><small>自动核查资源占用</small></div></div><i></i><div class="track-step" id="track-request"><span>3</span><div><strong>提交申请</strong><small>由 Oracle 返回结果</small></div></div><i></i><div class="track-step" id="track-result"><span>4</span><div><strong id="track-result-title">等待空闲容量</strong><small id="track-result-sub">成功后自动结束</small></div></div></div>
+    </section>
+
+    <section class="metrics" aria-label="申请统计">
+      <article class="metric panel"><div class="metric-label">累计尝试 <span class="tiny-icon">↗</span></div><div class="metric-number"><span id="total-attempts">—</span><small>次</small></div><p id="elapsed">从首次申请开始累计</p></article>
+      <article class="metric panel"><div class="metric-label">今日尝试 <span class="tiny-icon">◷</span></div><div class="metric-number"><span id="today-attempts">—</span><small>次</small></div><p id="today-label">按北京时间统计</p></article>
+      <article class="metric panel"><div class="metric-label">容量不足 <span class="tiny-icon amber">◌</span></div><div class="metric-number"><span id="capacity-count">—</span><small>次</small></div><p>区域暂时没有空闲资源</p></article>
+      <article class="metric panel"><div class="metric-label">已获得实例 <span class="tiny-icon green">✓</span></div><div class="metric-number"><span id="success-count">—</span><small>台</small></div><p id="success-hint">获得一台后停止申请</p></article>
+    </section>
+
+    <section class="result-panel panel" id="result-panel" hidden><div class="result-heading"><span class="success-symbol">✓</span><div><h2>已经等到这台 A1。</h2><p>实例已创建或已找到，任务不再提交新的申请。</p></div></div><div class="result-grid"><div><small>实例名称</small><strong id="result-name">Oracle-A1-1C6G</strong></div><div><small>规格</small><strong>1 OCPU / 6 GB / 50 GB</strong></div><div><small>获得时间</small><strong id="success-time">—</strong></div></div><div class="instance-id-row"><div><small>实例 OCID</small><code id="instance-id"></code></div><button class="button" id="copy-id">复制</button></div><p class="result-note">可在 Oracle 控制台查看启动状态和公网 IP。新机上的 HY2 需要另行部署。</p></section>
+
+    <div class="middle-grid">
+      <section class="panel activity"><div class="section-heading"><div><h2>申请节奏</h2><p>最近 24 小时 · 每小时提交次数</p></div><span class="chart-total" id="chart-total">—</span></div><div class="chart" id="chart" aria-label="最近24小时申请次数图"></div><div class="chart-axis" id="chart-axis"></div><div class="activity-note"><span class="legend-dot"></span>实际申请记录<span class="note-right">通常约 5 分钟一次，遇到异常会延长等待</span></div></section>
+      <section class="panel live-events"><div class="section-heading"><div><h2>实时进展</h2><p>最新发生的任务事件</p></div><span class="live-dot" aria-label="自动同步"></span></div><div class="events" id="events"><div class="empty">正在读取过程记录…</div></div></section>
+    </div>
+
+    <section class="panel history"><div class="section-heading history-heading"><div><h2>每一次申请，都可以回看。</h2><p>查看开始时间、等待结果和用时</p></div><a href="/api/export.csv" class="button export"><span>↓</span> 导出记录</a></div><div class="history-toolbar"><div class="filter-group" role="group" aria-label="筛选申请结果"><button class="filter active" data-filter="all" aria-pressed="true">全部</button><button class="filter" data-filter="capacity" aria-pressed="false">容量不足</button><button class="filter" data-filter="error" aria-pressed="false">异常</button><button class="filter" data-filter="success" aria-pressed="false">成功</button></div><span class="history-count" id="history-count"></span></div><div class="table-wrap"><table><thead><tr><th scope="col">申请序号</th><th scope="col">申请时间 <span>北京时间</span></th><th scope="col">结果</th><th scope="col">返回用时</th><th scope="col">可用域</th></tr></thead><tbody id="history-body"><tr><td colspan="5" class="empty">正在读取申请记录…</td></tr></tbody></table></div><div class="history-bottom"><span id="history-note">真实任务记录 · 自动同步</span><button class="button" id="load-more" hidden>加载更早记录 ↓</button></div></section>
+    <footer><span><span class="footer-brand">A1</span> 只读展示 · 数据来自虚机上的申请任务</span><span id="footer-time">每 5 秒刷新 · 北京时间</span></footer>
+  </main><div class="toast" id="toast" hidden role="status">已复制</div>
+</body></html>

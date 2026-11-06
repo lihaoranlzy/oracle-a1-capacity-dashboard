@@ -1,0 +1,23 @@
+# OCI credentials, account identifiers, launch bodies, and runtime state stay local.
+.oci/
+.env
+*.pem
+*.key
+*.pub
+*.p12
+**/a1-config.json
+*.state.json
+*.request.json
+*.lock
+*.tmp
+*.sqlite3*
+*.db*
+*.log
+*.jsonl
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+runtime/
+dist/

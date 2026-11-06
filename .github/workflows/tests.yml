@@ -1,0 +1,26 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.9', '3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Runner tests (no cloud API calls)
+        run: python -B -m unittest -v test_oracle_a1_retry.py
+      - name: Dashboard tests
+        run: python -B -m unittest discover -s dashboard -p 'test_*.py' -v
+      - name: Deployment unit rendering tests
+        run: python -B -m unittest discover -s deploy -p 'test_*.py' -v
